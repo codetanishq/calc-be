@@ -4,7 +4,7 @@ import os
 load_dotenv()
 
 SERVER_URL = "https://calc-be-1092.onrender.com"  # Updated to Render URL
-PORT = os.getenv("PORT", "8900")  # Default to 8900 if not set
+PORT = os.getenv("PORT", "10000")
 
 ENV = "production"  # Change from 'dev' to 'production' if needed
 
