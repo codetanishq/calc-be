@@ -11,13 +11,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=['https://calcai.netlify.app'],  # Allow only your frontend
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],  # Specify allowed methods
+    allow_headers=["Content-Type", "Authorization"],  # Allowed headers
 )
 
 
@@ -29,4 +28,11 @@ app.include_router(calculator_router, prefix="/calculate", tags=["calculate"])
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=int(PORT), reload=(ENV == "production"))
+    if ENV == "production":
+        HOST = SERVER_URL
+    else:
+        HOST = "127.0.0.1"  # Use localhost in development
+
+    uvicorn.run("main:app", host=HOST, port=int(PORT), reload=(ENV != "production"))
+
+    # uvicorn.run("main:app", host=SERVER_URL, port=int(PORT), reload=(ENV == "production"))
